@@ -6,6 +6,7 @@ import { CalendarPage } from "./pages/CalendarPage";
 import { LibraryPage, ExerciseDetailPage } from "./pages/LibraryPage";
 import { HistoryPage } from "./pages/HistoryPage";
 import { AddWorkoutPage } from "./pages/AddWorkoutPage";
+import { WorkoutDetailPage } from "./pages/WorkoutDetailPage";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL ?? "");
 
@@ -21,6 +22,7 @@ function App() {
               <Route path="library/:id" element={<LibraryDetailRoute />} />
               <Route path="add" element={<AddWorkoutPage />} />
               <Route path="history" element={<HistoryPage />} />
+              <Route path="workout/:id" element={<WorkoutDetailPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

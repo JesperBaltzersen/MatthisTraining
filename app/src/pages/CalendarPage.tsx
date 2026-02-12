@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { SportIcon } from "../components/SportIcon";
@@ -83,6 +84,11 @@ export function CalendarPage() {
     year: "År",
   };
 
+  function handleSelectDay(d: Date) {
+    setFocusDate(d);
+    setView("day");
+  }
+
   return (
     <div className="animate-fade-in">
       <header className="mb-6">
@@ -116,6 +122,7 @@ export function CalendarPage() {
             focusDate={focusDate}
             workoutsByDate={workoutsByDate}
             onNavigate={setFocusDate}
+            onSelectDay={handleSelectDay}
           />
         )}
         {view === "month" && (
@@ -123,6 +130,7 @@ export function CalendarPage() {
             focusDate={focusDate}
             workoutsByDate={workoutsByDate}
             onNavigate={setFocusDate}
+            onSelectDay={handleSelectDay}
           />
         )}
         {view === "year" && (
@@ -195,10 +203,12 @@ function WeekView({
   focusDate,
   workoutsByDate,
   onNavigate,
+  onSelectDay,
 }: {
   focusDate: Date;
   workoutsByDate: Map<number, Workout[]>;
   onNavigate: (d: Date) => void;
+  onSelectDay: (d: Date) => void;
 }) {
   const { start } = getRangeForView(focusDate, "week");
   const days = Array.from({ length: 7 }, (_, i) => {
@@ -244,7 +254,7 @@ function WeekView({
           return (
             <button
               key={dayStart}
-              onClick={() => onNavigate(d)}
+              onClick={() => onSelectDay(d)}
               className={`flex flex-col items-center rounded-[var(--radius)] p-2 transition-colors ${
                 isToday
                   ? "ring-2 ring-accent bg-accent/10"
@@ -283,10 +293,12 @@ function MonthView({
   focusDate,
   workoutsByDate,
   onNavigate,
+  onSelectDay,
 }: {
   focusDate: Date;
   workoutsByDate: Map<number, Workout[]>;
   onNavigate: (d: Date) => void;
+  onSelectDay: (d: Date) => void;
 }) {
   const year = focusDate.getFullYear();
   const month = focusDate.getMonth();
@@ -345,7 +357,7 @@ function MonthView({
           return (
             <button
               key={dayStart}
-              onClick={() => onNavigate(d)}
+              onClick={() => onSelectDay(d)}
               className={`flex flex-col items-center justify-center rounded-[var(--radius)] py-2 text-sm ${
                 isToday ? "ring-2 ring-accent bg-accent/10" : "hover:bg-background-alt"
               }`}
@@ -442,7 +454,10 @@ function WorkoutCard({ workout }: { workout: Workout }) {
       : `${workout.basketball?.drills?.length ?? 0} drills`;
 
   return (
-    <div className="rounded-[var(--radius)] border border-foreground/10 bg-background-alt/50 p-4 shadow-[var(--shadow)]">
+    <Link
+      to={`/workout/${workout._id}`}
+      className="block rounded-[var(--radius)] border border-foreground/10 bg-background-alt/50 p-4 shadow-[var(--shadow)] transition-colors hover:bg-background-alt"
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex gap-3">
           <SportIcon type={workout.type as "strength" | "basketball"} />
@@ -453,7 +468,7 @@ function WorkoutCard({ workout }: { workout: Workout }) {
         </div>
         <IntensityBadge intensity={workout.intensity as "easy" | "medium" | "hard"} />
       </div>
-    </div>
+    </Link>
   );
 }
 

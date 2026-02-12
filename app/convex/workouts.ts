@@ -16,6 +16,13 @@ export const listByDateRange = query({
   },
 });
 
+export const get = query({
+  args: { id: v.id("workouts") },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id);
+  },
+});
+
 export const getByDate = query({
   args: { date: v.number() },
   handler: async (ctx, args) => {
