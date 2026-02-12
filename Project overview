@@ -1,0 +1,35 @@
+##Overall
+A calender like website where you can track your workouts, both Basketball and strength traning. 
+It needs to be so i can easily edit what type of excercises i did, how many reps and sets in the strength training 
+There needs to be a section for the basketball traning where i can track my total shots during the workout, what drills i did.
+
+##Design and tech:
+The website needs to be a mobile first design so i can easily use it on my phone, tablet and computer.
+There needs to be a calender where i can see my workouts for the day, week, month and year.
+And the sports needs to have each their unique icon so i can easily identify the workout.
+There needs to be a search bar so i can easily find the excercise i want to do.
+Needs to be possible to save it to the homescreeen as an app. On the phone.
+There needs to be a color rating system so i can see the intensity of the workout.
+Green is easy, yellow is medium and red is hard.
+There needs to be a navigation bar in so i can easily navigate between the different sections of the website.
+There needs to be an option to easily add a new workout.
+There needs to be a section with a history of the workouts/drills i have done.
+There needs to be a libary section where i can find what excercises i have done before. 
+In the libary section i need to be able to click on an excercise and it will open a new page with the excercise details. And how many reps or sets i did last time and what the weight was.
+There needs to be a section with a calendar where i can see my workouts for the day, week, month and year.
+In the libary section the excercises needs to be In alfabetic order.
+
+tools:
+- React
+- Tailwind CSS
+- Shadcn UI
+- Convex Backend
+- Bun
+- Vite
+
+###Basketball:
+There needs to be a section for the basketball traning where i can track type of drills, and how many reps or how much time i spent. 
+
+###Strength training:
+There needs to be a excercise library so i can easily add new excercises to the strength training. Where i can see how many reps or sets i did last time and what the weight was. I also need the date.
+

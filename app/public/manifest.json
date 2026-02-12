@@ -1,0 +1,10 @@
+{
+  "name": "Matthis Træning",
+  "short_name": "Træning",
+  "description": "Workout tracker for basketball and strength training",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f3eb",
+  "theme_color": "#c75b39",
+  "orientation": "portrait-primary"
+}
