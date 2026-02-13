@@ -30,9 +30,12 @@ export const schema = defineSchema({
         exerciseLogs: v.array(
           v.object({
             exerciseId: v.id("exercises"),
-            sets: v.number(),
-            reps: v.optional(v.number()),
-            weightKg: v.optional(v.number()),
+            sets: v.array(
+              v.object({
+                reps: v.optional(v.number()),
+                weightKg: v.optional(v.number()),
+              })
+            ),
           })
         ),
       })

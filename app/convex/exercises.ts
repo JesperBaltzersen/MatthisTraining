@@ -51,11 +51,28 @@ export const getLastPerformance = query({
           (l) => l.exerciseId === args.exerciseId
         );
         if (log) {
+          const sets = log.sets;
+          const isNewShape = Array.isArray(sets);
+          const setCount = isNewShape
+            ? (sets as { reps?: number; weightKg?: number }[]).length
+            : (typeof sets === "number" ? sets : 0);
+          const reps = isNewShape
+            ? (setCount > 0
+                ? (sets as { reps?: number; weightKg?: number }[])[setCount - 1]
+                    ?.reps
+                : undefined)
+            : (log as { reps?: number }).reps;
+          const weightKg = isNewShape
+            ? (setCount > 0
+                ? (sets as { reps?: number; weightKg?: number }[])[setCount - 1]
+                    ?.weightKg
+                : undefined)
+            : (log as { weightKg?: number }).weightKg;
           return {
             date: workout.date,
-            sets: log.sets,
-            reps: log.reps,
-            weightKg: log.weightKg,
+            setCount,
+            reps,
+            weightKg,
           };
         }
       }

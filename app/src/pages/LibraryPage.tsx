@@ -172,7 +172,7 @@ export function ExerciseDetailPage({ id }: { id: Id<"exercises"> }) {
             </div>
             <div className="flex justify-between">
               <dt className="text-foreground/70">Sæt</dt>
-              <dd>{lastPerformance.sets}</dd>
+              <dd>{lastPerformance.setCount}</dd>
             </div>
             {lastPerformance.reps != null && (
               <div className="flex justify-between">

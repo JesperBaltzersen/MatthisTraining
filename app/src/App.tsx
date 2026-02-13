@@ -21,6 +21,7 @@ function App() {
               <Route path="library" element={<LibraryPage />} />
               <Route path="library/:id" element={<LibraryDetailRoute />} />
               <Route path="add" element={<AddWorkoutPage />} />
+              <Route path="workout/:id/edit" element={<AddWorkoutPage />} />
               <Route path="history" element={<HistoryPage />} />
               <Route path="workout/:id" element={<WorkoutDetailPage />} />
             </Route>

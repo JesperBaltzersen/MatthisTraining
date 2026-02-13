@@ -4,8 +4,8 @@ import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
 import { SportIcon } from "../components/SportIcon";
 import { IntensityBadge } from "../components/IntensityBadge";
-import { formatDateShort } from "../lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { formatDateShort, normalizeStrengthExerciseLog } from "../lib/utils";
+import { ArrowLeft, Pencil } from "lucide-react";
 
 export function WorkoutDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -47,12 +47,20 @@ export function WorkoutDetailPage() {
 
   return (
     <div className="animate-fade-in">
-      <Link
-        to="/"
-        className="mb-6 inline-flex items-center gap-2 text-sm text-foreground/70 hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" /> Tilbage til kalender
-      </Link>
+      <div className="mb-6 flex items-center justify-between gap-3">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-sm text-foreground/70 hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" /> Tilbage til kalender
+        </Link>
+        <Link
+          to={`/workout/${workout._id}/edit`}
+          className="inline-flex items-center gap-2 rounded-[var(--radius)] border border-foreground/15 bg-background-alt/50 px-3 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:bg-accent/10 hover:text-accent"
+        >
+          <Pencil className="h-4 w-4" /> Rediger
+        </Link>
+      </div>
 
       <div className="rounded-[var(--radius)] border border-foreground/10 bg-background-alt/50 p-4 shadow-[var(--shadow)]">
         <div className="mb-4 flex items-start justify-between gap-3">
@@ -77,26 +85,38 @@ export function WorkoutDetailPage() {
         {workout.type === "strength" && workout.strength?.exerciseLogs && (
           <div className="space-y-4">
             <h3 className="font-medium text-foreground">Øvelser</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {workout.strength.exerciseLogs.map((log, index) => {
+                const normalized = normalizeStrengthExerciseLog(
+                  log as Parameters<typeof normalizeStrengthExerciseLog>[0]
+                );
                 const name =
-                  exerciseNameById.get(log.exerciseId) ?? "Ukendt øvelse";
-                const parts: string[] = [];
-                if (log.sets != null) parts.push(`${log.sets} sæt`);
-                if (log.reps != null) parts.push(`${log.reps} reps`);
-                if (log.weightKg != null) parts.push(`${log.weightKg} kg`);
-                const detail = parts.length > 0 ? parts.join(" · ") : null;
+                  exerciseNameById.get(normalized.exerciseId) ?? "Ukendt øvelse";
+                const sets = normalized.sets;
                 return (
                   <li
-                    key={`${log.exerciseId}-${index}`}
-                    className="flex justify-between rounded-[var(--radius)] border border-foreground/10 bg-background/50 px-3 py-2"
+                    key={`${normalized.exerciseId}-${index}`}
+                    className="rounded-[var(--radius)] border border-foreground/10 bg-background/50 p-3"
                   >
-                    <span className="font-medium text-foreground">{name}</span>
-                    {detail && (
-                      <span className="text-sm text-foreground/70">
-                        {detail}
-                      </span>
-                    )}
+                    <p className="mb-2 font-medium text-foreground">{name}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {sets.map((set, setIdx) => {
+                        const parts: string[] = [];
+                        if (set.reps != null) parts.push(`${set.reps} reps`);
+                        if (set.weightKg != null)
+                          parts.push(`${set.weightKg} kg`);
+                        const detail =
+                          parts.length > 0 ? parts.join(" × ") : "—";
+                        return (
+                          <span
+                            key={setIdx}
+                            className="rounded-[var(--radius)] border border-foreground/10 bg-background px-2.5 py-1.5 text-sm text-foreground/80"
+                          >
+                            Sæt {setIdx + 1}: {detail}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </li>
                 );
               })}

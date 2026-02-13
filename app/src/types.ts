@@ -9,9 +9,7 @@ export interface Workout {
   strength?: {
     exerciseLogs: {
       exerciseId: Id<"exercises">;
-      sets: number;
-      reps?: number;
-      weightKg?: number;
+      sets: { reps?: number; weightKg?: number }[];
     }[];
   };
   basketball?: {
