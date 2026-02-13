@@ -255,7 +255,7 @@ function WeekView({
             <button
               key={dayStart}
               onClick={() => onSelectDay(d)}
-              className={`flex flex-col items-center rounded-[var(--radius)] p-2 transition-colors ${
+              className={`flex flex-col items-center justify-start rounded-[var(--radius)] p-2 transition-colors ${
                 isToday
                   ? "ring-2 ring-accent bg-accent/10"
                   : "hover:bg-background-alt"
@@ -266,18 +266,9 @@ function WeekView({
               </span>
               <span className="font-display text-lg font-semibold">{d.getDate()}</span>
               {list.length > 0 && (
-                <div className="mt-1 flex gap-0.5">
+                <div className="mt-1 flex flex-wrap justify-center gap-0.5">
                   {list.slice(0, 3).map((w) => (
-                    <span
-                      key={w._id}
-                      className={`h-1.5 w-1.5 rounded-full ${
-                        w.intensity === "easy"
-                          ? "bg-intensity-easy"
-                          : w.intensity === "medium"
-                            ? "bg-intensity-medium"
-                            : "bg-intensity-hard"
-                      }`}
-                    />
+                    <SportIcon key={w._id} type={w.type} size="sm" />
                   ))}
                 </div>
               )}
@@ -358,24 +349,15 @@ function MonthView({
             <button
               key={dayStart}
               onClick={() => onSelectDay(d)}
-              className={`flex flex-col items-center justify-center rounded-[var(--radius)] py-2 text-sm ${
+              className={`flex min-h-[3rem] flex-col items-center justify-start rounded-[var(--radius)] py-2 text-sm ${
                 isToday ? "ring-2 ring-accent bg-accent/10" : "hover:bg-background-alt"
               }`}
             >
-              {d.getDate()}
+              <span>{d.getDate()}</span>
               {list.length > 0 && (
-                <div className="mt-0.5 flex gap-0.5">
-                  {list.slice(0, 2).map((w) => (
-                    <span
-                      key={w._id}
-                      className={`h-1 w-1 rounded-full ${
-                        w.intensity === "easy"
-                          ? "bg-intensity-easy"
-                          : w.intensity === "medium"
-                            ? "bg-intensity-medium"
-                            : "bg-intensity-hard"
-                      }`}
-                    />
+                <div className="mt-0.5 flex flex-wrap justify-center gap-0.5">
+                  {list.slice(0, 3).map((w) => (
+                    <SportIcon key={w._id} type={w.type} size="sm" />
                   ))}
                 </div>
               )}
@@ -385,6 +367,25 @@ function MonthView({
       </div>
     </div>
   );
+}
+
+function getWorkoutCountsByTypeForMonth(
+  year: number,
+  month: number,
+  workoutsByDate: Map<number, Workout[]>
+): { strength: number; basketball: number } {
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  let strength = 0;
+  let basketball = 0;
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayStart = getStartOfDay(new Date(year, month, day).getTime());
+    const dayWorkouts = workoutsByDate.get(dayStart) ?? [];
+    for (const w of dayWorkouts) {
+      if (w.type === "strength") strength += 1;
+      else basketball += 1;
+    }
+  }
+  return { strength, basketball };
 }
 
 function YearView({
@@ -426,19 +427,37 @@ function YearView({
       </div>
       <div className="grid grid-cols-3 gap-2">
         {months.map((m) => {
-          const count = Array.from({ length: new Date(year, m.getMonth() + 1, 0).getDate() }, (_, i) =>
-            getStartOfDay(new Date(year, m.getMonth(), i + 1).getTime())
-          ).reduce((acc, dayStart) => acc + ((workoutsByDate.get(dayStart)?.length ?? 0) > 0 ? 1 : 0), 0);
+          const countsByType = getWorkoutCountsByTypeForMonth(
+            year,
+            m.getMonth(),
+            workoutsByDate
+          );
           return (
             <button
               key={m.getMonth()}
               onClick={() => onNavigate(m)}
               className="rounded-[var(--radius)] border border-foreground/10 bg-background-alt/50 p-4 text-left transition-colors hover:bg-background-alt"
             >
-              <span className="font-display font-medium">
+              <span className="font-display font-medium block mb-1">
                 {m.toLocaleDateString("da-DK", { month: "short" })}
               </span>
-              <span className="ml-2 text-sm text-foreground/60">{count} træninger</span>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                {(Object.entries(countsByType) as [keyof typeof countsByType, number][]).map(
+                  ([type, count]) =>
+                    count > 0 ? (
+                      <span
+                        key={type}
+                        className="flex items-center gap-1 text-sm text-foreground/70"
+                      >
+                        <SportIcon type={type} size="sm" />
+                        <span>{count}</span>
+                      </span>
+                    ) : null
+                )}
+                {countsByType.strength === 0 && countsByType.basketball === 0 && (
+                  <span className="text-sm text-foreground/50">—</span>
+                )}
+              </div>
             </button>
           );
         })}

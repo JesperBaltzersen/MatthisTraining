@@ -1,31 +1,27 @@
-import { useTheme, type ThemeId } from "../contexts/ThemeContext";
-import { cn } from "../lib/utils";
-
-const themes: { id: ThemeId; label: string }[] = [
-  { id: "warm-paper", label: "Varm papir" },
-  { id: "botanical", label: "Botanisk" },
-  { id: "minimal", label: "Minimal" },
-];
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
 
 export function ThemeSelector() {
   const { theme, setTheme } = useTheme();
 
+  const isDark = theme === "midnight";
+
+  const toggleTheme = () => {
+    setTheme(isDark ? "brutalist" : "midnight");
+  };
+
   return (
-    <div className="flex gap-2">
-      {themes.map((t) => (
-        <button
-          key={t.id}
-          onClick={() => setTheme(t.id)}
-          className={cn(
-            "rounded-[var(--radius)] px-3 py-1.5 text-sm font-medium transition-colors",
-            theme === t.id
-              ? "bg-accent text-white"
-              : "bg-background-alt text-foreground/70 hover:text-foreground"
-          )}
-        >
-          {t.label}
-        </button>
-      ))}
-    </div>
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] text-foreground transition-colors hover:bg-background-alt"
+      aria-label={isDark ? "Skift til lys tema" : "Skift til mørkt tema"}
+    >
+      {isDark ? (
+        <Sun className="h-5 w-5" aria-hidden />
+      ) : (
+        <Moon className="h-5 w-5" aria-hidden />
+      )}
+    </button>
   );
 }

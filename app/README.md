@@ -1,6 +1,6 @@
 # Matthis Træning
 
-Workout tracking app for basketball and strength training. Mobile-first design with three visual themes: Warm Paper, Botanical Journal, and Minimal Moleskine.
+Workout tracking app for basketball and strength training. Mobile-first design with two themes: Brutalist (light) and Midnight (dark), toggled via a sun/moon icon.
 
 ## Features
 
@@ -11,7 +11,7 @@ Workout tracking app for basketball and strength training. Mobile-first design w
 - **Intensity rating**: Green (easy), yellow (medium), red (hard)
 - **Sport icons**: Basketball and strength training each have unique icons
 - **PWA**: Add to home screen on mobile
-- **Theme selector**: Switch between Warm Paper, Botanical, and Minimal designs
+- **Theme toggle**: Sun/moon icon in the header switches between Brutalist (light) and Midnight (dark)
 
 ## Setup
 
@@ -68,5 +68,5 @@ npm run preview
 
 - `src/pages/` – Calendar, Library, History, Add Workout
 - `src/components/` – Layout, BottomNav, SportIcon, IntensityBadge, ThemeSelector
-- `src/contexts/` – ThemeContext (Warm Paper / Botanical / Minimal)
+- `src/contexts/` – ThemeContext (Brutalist / Midnight)
 - `convex/` – Schema, workouts and exercises API

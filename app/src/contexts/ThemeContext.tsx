@@ -6,7 +6,9 @@ import {
   type ReactNode,
 } from "react";
 
-export type ThemeId = "warm-paper" | "botanical" | "minimal";
+export type ThemeId = "brutalist" | "midnight";
+
+const VALID_THEMES: ThemeId[] = ["brutalist", "midnight"];
 
 interface ThemeContextValue {
   theme: ThemeId;
@@ -19,15 +21,12 @@ const STORAGE_KEY = "matthis-training-theme";
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeId>(() => {
-    if (typeof window === "undefined") return "warm-paper";
+    if (typeof window === "undefined") return "brutalist";
     const stored = localStorage.getItem(STORAGE_KEY) as ThemeId | null;
-    if (
-      stored &&
-      ["warm-paper", "botanical", "minimal"].includes(stored)
-    ) {
+    if (stored && VALID_THEMES.includes(stored as ThemeId)) {
       return stored;
     }
-    return "warm-paper";
+    return "brutalist";
   });
 
   const setTheme = (newTheme: ThemeId) => {
