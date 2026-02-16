@@ -72,8 +72,8 @@ export function AddWorkoutPage() {
     if (w.type === "strength" && w.strength?.exerciseLogs?.length) {
       setStrengthLogs(
         w.strength.exerciseLogs.map((log) => {
-          const normalized = normalizeStrengthExerciseLog(
-            log as Parameters<typeof normalizeStrengthExerciseLog>[0]
+          const normalized = normalizeStrengthExerciseLog<Id<"exercises">>(
+            log as Parameters<typeof normalizeStrengthExerciseLog<Id<"exercises">>>[0]
           );
           return {
             exerciseId: normalized.exerciseId,

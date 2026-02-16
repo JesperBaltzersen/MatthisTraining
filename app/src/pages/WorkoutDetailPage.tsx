@@ -87,9 +87,9 @@ export function WorkoutDetailPage() {
             <h3 className="font-medium text-foreground">Øvelser</h3>
             <ul className="space-y-4">
               {workout.strength.exerciseLogs.map((log, index) => {
-                const normalized = normalizeStrengthExerciseLog(
-                  log as Parameters<typeof normalizeStrengthExerciseLog>[0]
-                );
+                const normalized = normalizeStrengthExerciseLog<
+                  Id<"exercises">
+                >(log as Parameters<typeof normalizeStrengthExerciseLog<Id<"exercises">>>[0]);
                 const name =
                   exerciseNameById.get(normalized.exerciseId) ?? "Ukendt øvelse";
                 const sets = normalized.sets;

@@ -38,12 +38,12 @@ export function formatDateShort(date: Date): string {
 export type NormalizedStrengthSet = { reps?: number; weightKg?: number };
 
 /** Normalize exercise log so that sets is always an array (handles old data where sets was a number). */
-export function normalizeStrengthExerciseLog(log: {
-  exerciseId: string;
+export function normalizeStrengthExerciseLog<T extends string = string>(log: {
+  exerciseId: T;
   sets?: number | NormalizedStrengthSet[];
   reps?: number;
   weightKg?: number;
-}): { exerciseId: string; sets: NormalizedStrengthSet[] } {
+}): { exerciseId: T; sets: NormalizedStrengthSet[] } {
   const sets = log.sets;
   if (Array.isArray(sets)) {
     return { exerciseId: log.exerciseId, sets };
