@@ -40,6 +40,8 @@ When prompted, copy the `VITE_CONVEX_URL` and add it to a `.env.local` file:
 VITE_CONVEX_URL=https://your-deployment.convex.cloud
 ```
 
+To run without sign-in (e.g. local development), set `VITE_AUTH_ENABLED=false` in `.env.local`. Auth remains in the code and can be re-enabled by removing this variable or setting it to any other value (and configuring `VITE_CLERK_PUBLISHABLE_KEY` when using Clerk).
+
 ### 3. Run the app
 
 ```bash

@@ -12,12 +12,13 @@
     "convex:deploy": "convex deploy"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.60.0",
+    "clsx": "^2.1.1",
+    "convex": "^1.18.0",
+    "lucide-react": "^0.469.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.1.0",
-    "convex": "^1.18.0",
-    "lucide-react": "^0.469.0",
-    "clsx": "^2.1.1",
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
